@@ -16,6 +16,7 @@ public class Main {
 
 	public static final String RELEASE_NAME = "NICKS";
 	public static final String DEVELOPER_RELEASE_NAME = "Andros (Mimerme) Yang";
+	public static final String VERSION_NAME = "v.0.5b";
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		System.out.println("Running Utility Console [" + RELEASE_NAME + "] : "
@@ -25,7 +26,10 @@ public class Main {
 			return;
 		}
 
-		if(args[0].equals("dwn")){
+		if(args[0].equals("verison")){
+			System.out.println("VERSION: " + VERSION_NAME);
+		}
+		else if(args[0].equals("dwn")){
 			//file structure
 			//MASTER BRANCH ROOT
 			//	|
