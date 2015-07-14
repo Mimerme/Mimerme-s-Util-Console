@@ -22,7 +22,7 @@ public class Main {
 	static String s = null;
 	public static final String RELEASE_NAME = "NICKS";
 	public static final String DEVELOPER_RELEASE_NAME = "Andros (Mimerme) Yang";
-	public static final String VERSION_NAME = "v.0.7b";
+	public static final String VERSION_NAME = "v.0.8b";
 	public static final Map<String, String> env = System.getenv();
 
 	public static void main(String[] args) throws IOException, InterruptedException {
@@ -89,14 +89,16 @@ public class Main {
 			}
 		}
 		else if(args[0].equals("update")){
-			if(args[1].equals("main")){
-				System.out.println("\nUpdating module manager");
-				downloadMain(new String[]{
-						null,Files.readAllLines(Paths.get(env.get("UTILS_PATH") + "\\release.REPO")).get(0)
-				});
+			if(args.length > 1){
+				if(args[1].equals("main")){
+					System.out.println("\nUpdating module manager");
+					downloadMain(new String[]{
+							null,Files.readAllLines(Paths.get(env.get("UTILS_PATH") + "\\release.REPO")).get(0)
+					});
+					System.exit(1);
+				}
 				System.exit(1);
 			}
-			System.exit(1);
 
 			//Requires Java 8
 			System.out.println("\nUpdating all modules");
