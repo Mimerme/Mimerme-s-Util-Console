@@ -20,7 +20,7 @@ public class Main {
 	public static final Map<String, String> env = System.getenv();
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		System.out.println("Running Utility Console [" + RELEASE_NAME + "] : "
+		System.out.println("\nRunning Utility Console [" + RELEASE_NAME + "] : "
 				+ "[" + DEVELOPER_RELEASE_NAME + "]");
 		System.out.println("VERSION: " + VERSION_NAME);
 
@@ -36,14 +36,14 @@ public class Main {
 			//		|
 			//		--release.jar
 			if(args.length != 3){
-				System.out.println("USAGE ERROR!");
+				System.out.println("\nUSAGE ERROR!");
 				System.out.println("============");
 				System.out.println("dwn [GITHUB URL WITH BACKSLASH] "
 						+ "[LOCAL NAME TO BE SAVED AS]");
 				return;
 			}
-			String releaseURL = args[1] + "/release.jar";
-			System.out.println("Downloading release from " + releaseURL);
+			String releaseURL = args[1] + "/release.jar?raw=true";
+			System.out.println("\nDownloading release from " + releaseURL);
 
 			String fileName = args[2] + ".jar"; //Currently only supports .jars and only Java
 			URL link = new URL(releaseURL); //The file that you want to download
@@ -57,7 +57,7 @@ public class Main {
 			{
 				out.write(buf, 0, n);
 			}
-			System.out.print('>');
+			System.out.print('\n');
 			out.close();
 			in.close();
 			byte[] response = out.toByteArray();
@@ -71,8 +71,8 @@ public class Main {
 
 			//-----------------------------------------------------------
 
-			releaseURL = args[1] + "/release.bat";
-			System.out.println("Downloading configuration from " + releaseURL);
+			releaseURL = args[1] + "/release.bat?raw=true";
+			System.out.println("\nDownloading configuration from " + releaseURL);
 
 			fileName = args[2] + ".bat";
 			link = new URL(releaseURL); //The file that you want to download
@@ -86,7 +86,7 @@ public class Main {
 			{
 				out.write(buf, 0, n);
 			}
-			System.out.print('>');
+			System.out.print('\n');
 			out.close();
 			in.close();
 			response = out.toByteArray();
@@ -114,7 +114,7 @@ public class Main {
 		else if(args[0].equals("run")){
 
 			if(args.length != 2){
-				System.out.println("USAGE ERROR!");
+				System.out.println("\nUSAGE ERROR!");
 				System.out.println("============");
 				System.out.println("run [MODULE NAME] ");	
 				return;
@@ -130,23 +130,37 @@ public class Main {
 			//Only runs jar files
 			//TODO: Run batch/bash scripts
 
-			StringBuffer sb = new StringBuffer();
 			Process p;
-
+			
+			String command = "cmd /c java -jar " + path;
+			
+			//Parse additional arguments
+			for(int i = 2; i < args.length; i++){
+				command += " " + args[i];
+			}
+			
 			p = Runtime.getRuntime()
-					.exec("cmd /c java -jar " + path + " ");
+					.exec(command);
+			
 			p.waitFor();
 
-
-			BufferedReader reader = 
-					new BufferedReader(new InputStreamReader(p.getInputStream()));
+			System.out.println();
 			
-			
-
-			String line = "";			
-			while ((line = reader.readLine())!= null) {
-				sb.append(line + "\n");
-			}
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(p.getInputStream()));
+    
+               BufferedReader stdError = new BufferedReader(new
+                    InputStreamReader(p.getErrorStream()));
+    
+               // read the output from the command
+               while ((s = stdInput.readLine()) != null) {
+                   System.out.println(s);
+               }
+                
+               // read any errors from the attempted command
+               while ((s = stdError.readLine()) != null) {
+                   System.out.println(s);
+               }
 		}
 	}
 
