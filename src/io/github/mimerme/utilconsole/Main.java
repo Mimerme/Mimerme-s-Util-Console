@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
 
@@ -18,6 +20,7 @@ public class Main {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		System.out.println("Running Utility Console [" + RELEASE_NAME + "] : "
 				+ "[" + DEVELOPER_RELEASE_NAME + "]");
+		System.out.println();
 		if(args.length < 1){
 			return;
 		}
@@ -36,7 +39,7 @@ public class Main {
 						+ "[LOCAL NAME TO BE SAVED AS]");
 				return;
 			}
-			String releaseURL = args[1] + "blob/release/release.jar";
+			String releaseURL = args[1] + "/release.jar";
 			System.out.println("Downloading release from " + releaseURL);
 
 			String fileName = args[2] + ".jar"; //Currently only supports .jars and only Java
@@ -47,29 +50,62 @@ public class Main {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			byte[] buf = new byte[1024];
 			int n = 0;
-			System.out.println("[NOTICE]: As long as you see the loading icon network activity is occuring");
+			System.out.println("[NOTICE]: As long as you see the progress bar network activity is occuring");
+			System.out.println("[PROGRESS]");
 			while (-1!=(n=in.read(buf)))
 			{
 				out.write(buf, 0, n);
-				System.out.println();
-				System.out.print('/');
-				System.out.print('\b');
-				System.out.print('-');
-				System.out.print('\b');
-				System.out.print('\\');
-				System.out.print('\b');
-
+				System.out.print("=");
 			}
+			System.out.print('>');
 			out.close();
 			in.close();
 			byte[] response = out.toByteArray();
-			new File(System.getProperty("user.dir") + "\\" + args[1]).mkdirs();
-			FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir") + "\\" + args[1] + "\\"+ fileName);
+			new File(System.getProperty("user.dir") + "\\" + args[2]).mkdirs();
+			FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir") + "\\" + args[2] + "\\"+ fileName);
 			fos.write(response);
 			fos.close();
 			//End download code
 
-			System.out.println("==|Finished download|==");
+			System.out.println("==|Finished application download|==");
+			
+			//-----------------------------------------------------------
+			
+			releaseURL = args[1] + "/release.bat";
+			System.out.println("Downloading configuration from " + releaseURL);
+
+			fileName = args[2] + ".bat";
+			link = new URL(releaseURL); //The file that you want to download
+
+			//Code to download
+			in = new BufferedInputStream(link.openStream());
+			out = new ByteArrayOutputStream();
+			buf = new byte[1024];
+			n = 0;
+			System.out.println("[NOTICE]: As long as you see the progress bar network activity is occuring");
+			System.out.println("[PROGRESS]");
+			while (-1!=(n=in.read(buf)))
+			{
+				out.write(buf, 0, n);
+				System.out.print("=");
+			}
+			System.out.print('>');
+			out.close();
+			in.close();
+			response = out.toByteArray();
+			new File(System.getProperty("user.dir") + "\\" + args[2]).mkdirs();
+			fos = new FileOutputStream(System.getProperty("user.dir") + "\\" + args[2] + "\\"+ fileName);
+			fos.write(response);
+			fos.close();
+			//End download code
+			
+			System.out.println("==|Finished configuration download|==");
+			System.out.println("--------------------------------------");
+			System.out.println("==|Adding to PATH|==");
+
+			final Map<String, String> env = new HashMap<String, String>(System.getenv());
+	        env.put("PATH", env.get("Path") + ";"  + System.getProperty("user.dir") + "\\" + args[2] + "\\"+ fileName);
+
 
 		}
 		else if(args[0].equals("run")){
