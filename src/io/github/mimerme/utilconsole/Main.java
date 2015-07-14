@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class Main {
 	static String s = null;
 	public static final String RELEASE_NAME = "NICKS";
 	public static final String DEVELOPER_RELEASE_NAME = "Andros (Mimerme) Yang";
-	public static final String VERSION_NAME = "v.0.55b";
+	public static final String VERSION_NAME = "v.0.7b";
 	public static final Map<String, String> env = System.getenv();
 
 	public static void main(String[] args) throws IOException, InterruptedException {
@@ -88,6 +89,15 @@ public class Main {
 			}
 		}
 		else if(args[0].equals("update")){
+			if(args[1].equals("main")){
+				System.out.println("\nUpdating module manager");
+				downloadMain(new String[]{
+						null,Files.readAllLines(Paths.get(env.get("UTILS_PATH") + "\\release.REPO")).get(0)
+				});
+				System.exit(1);
+			}
+			System.exit(1);
+
 			//Requires Java 8
 			System.out.println("\nUpdating all modules");
 
@@ -116,13 +126,13 @@ public class Main {
 
 		}
 	}
-	
-    private static String getFileExtension(String file) {
-        String fileName = file;
-        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
-        return fileName.substring(fileName.lastIndexOf(".")+1);
-        else return "";
-    }
+
+	private static String getFileExtension(String file) {
+		String fileName = file;
+		if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+			return fileName.substring(fileName.lastIndexOf(".")+1);
+		else return "";
+	}
 
 	static String[] mapToStringArray(Map<String, String> map) {
 		final String[] strings = new String[map.size()];
@@ -133,7 +143,104 @@ public class Main {
 		}
 		return strings;
 	}
-	
+
+	static void downloadMain(String args[]) throws IOException{
+
+		//file structure
+		//MASTER BRANCH ROOT
+		//	|
+		//	--release FOLDER
+		//		|
+		//		--release.jar
+		String releaseURL = args[1] + "/release.jar?raw=true";
+		System.out.println("\nDownloading release from " + releaseURL);
+
+		String fileName = "release.jar"; //Currently only supports .jars and only Java
+		URL link = new URL(releaseURL); //The file that you want to download
+
+		//Code to download
+		InputStream in = new BufferedInputStream(link.openStream());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		byte[] buf = new byte[1024];
+		int n = 0;
+		while (-1!=(n=in.read(buf)))
+		{
+			out.write(buf, 0, n);
+		}
+		System.out.print('\n');
+		out.close();
+		in.close();
+		byte[] response = out.toByteArray();
+		System.out.println(env.get("UTILS_PATH") + "\\" + fileName);
+		FileOutputStream fos = new FileOutputStream(env.get("UTILS_PATH") + "\\" + fileName);
+		fos.write(response);
+		fos.close();
+		//End download code
+
+		System.out.println("==|Finished application download|==");
+
+		//-----------------------------------------------------------
+
+		releaseURL = args[1] + "/release.bat?raw=true";
+		System.out.println("\nDownloading configuration from " + releaseURL);
+
+		fileName = "release.bat";
+		link = new URL(releaseURL); //The file that you want to download
+
+		//Code to download
+		in = new BufferedInputStream(link.openStream());
+		out = new ByteArrayOutputStream();
+		buf = new byte[1024];
+		n = 0;
+		while (-1!=(n=in.read(buf)))
+		{
+			out.write(buf, 0, n);
+		}
+		System.out.print('\n');
+		out.close();
+		in.close();
+		response = out.toByteArray();
+		fos = new FileOutputStream(env.get("UTILS_PATH") + "\\" + fileName);
+		fos.write(response);
+		fos.close();
+		//End download code
+
+		System.out.println("==|Finished configuration download|==");
+
+		//Generate the configuration repository for updates
+		BufferedWriter writer = null;
+		try {
+			//create a config file
+			File logFile = new File(env.get("UTILS_PATH") + "\\" + "release" + ".REPO");
+
+			writer = new BufferedWriter(new FileWriter(logFile));
+			writer.write(args[1]);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// Close the writer regardless of what happens...
+				writer.close();
+			} catch (Exception e) {
+			}
+		}
+
+		System.out.println("--------------------------------------");
+		//Removed because it does not support multiple OS's easily
+		/*			System.out.println("==|Adding to PATH|==");
+		 */
+		/*Process p = Runtime.getRuntime().exec("cmd /c set PATH=%PATH%;" 
+				+ env.get("UTILS_PATH") + "\\" + args[2] + "\\"+ fileName);
+
+		p.waitFor();		
+		Runtime.getRuntime().exec("cmd /c set PATH=%PATH%;" 
+				+ env.get("UTILS_PATH") + "\\" + args[2]);
+
+		System.out.println("All files should be stored in " + env.get("UTILS_PATH"));*/
+
+
+	}
+
 	static void download(String args[]) throws IOException{
 
 		//file structure
@@ -236,7 +343,7 @@ public class Main {
 
 		System.out.println("All files should be stored in " + env.get("UTILS_PATH"));*/
 
-	
+
 	}
 
 }
