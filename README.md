@@ -14,3 +14,32 @@ Utility console written in Java to run and download console modules easliy
 - Windows only (due to it running only batch scripts, shell scripts incomming)
 - some bugs and code performance issues
 - repetative code
+
+#Module Structure
+To create a module you must include
+- [MODULE].jar (executed by batch script)
+- [MODULE].bat (executed by UtilConsole)
+- [MODULE].REPO - contains the link that can lead to release.jar and release.bat
+
+Structure
+=========
+UtilConsole
+|
+--|release.jar
+--|release.bat
+--|release.REPO
+--|[MODULE]
+----|[MODULE].REPO
+----|[MODULE].jar
+----|[MODULE].bat
+
+#Commands
+NOTE: You must add the batch file to your PATH
+
+release dwn [URL] [MODULE_LOCAL_SAVE_NAME] - downloads module and saves it
+
+release run [MODULE] - runs the specified module
+
+release update - updates all the modules
+
+release update main - updates the module manager
