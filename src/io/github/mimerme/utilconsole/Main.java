@@ -22,7 +22,7 @@ public class Main {
 	static String s = null;
 	public static final String RELEASE_NAME = "NICKS";
 	public static final String DEVELOPER_RELEASE_NAME = "Andros (Mimerme) Yang";
-	public static final String VERSION_NAME = "v.0.8b";
+	public static final String VERSION_NAME = "v.0.8.5b";
 	public static final Map<String, String> env = System.getenv();
 
 	public static void main(String[] args) throws IOException, InterruptedException {
@@ -56,7 +56,7 @@ public class Main {
 			//Only runs jar files
 			//TODO: Run batch/bash scripts
 
-			Process p;
+			Process pb;
 
 			String command = "cmd /c java -jar " + path;
 
@@ -65,27 +65,26 @@ public class Main {
 				command += " " + args[i];
 			}
 
-			p = Runtime.getRuntime()
-					.exec(command);
+			Process proc = 	Runtime.getRuntime().exec(command);
 
-			p.waitFor();
+			InputStream is = proc.getInputStream();
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
 
-			System.out.println();
+			String line;
+			int exit = -1;
 
-			BufferedReader stdInput = new BufferedReader(new
-					InputStreamReader(p.getInputStream()));
-
-			BufferedReader stdError = new BufferedReader(new
-					InputStreamReader(p.getErrorStream()));
-
-			// read the output from the command
-			while ((s = stdInput.readLine()) != null) {
-				System.out.println(s);
-			}
-
-			// read any errors from the attempted command
-			while ((s = stdError.readLine()) != null) {
-				System.out.println(s);
+			while ((line = br.readLine()) != null) {
+			    // Outputs your process execution
+			    System.out.println(line);
+			    try {
+			        exit = proc.exitValue();
+			        if (exit == 0)  {
+			            // Process finished
+			        }
+			    } catch (IllegalThreadStateException t) {
+			        	System.out.println("Process IllegalThreadState, not destroying");
+			    }
 			}
 		}
 		else if(args[0].equals("update")){
