@@ -22,7 +22,7 @@ public class Main {
 	static String s = null;
 	public static final String RELEASE_NAME = "NICKS";
 	public static final String DEVELOPER_RELEASE_NAME = "Andros (Mimerme) Yang";
-	public static final String VERSION_NAME = "v.0.8.5b";
+	public static final String VERSION_NAME = "v.0.8.6b";
 	public static final Map<String, String> env = System.getenv();
 
 	public static void main(String[] args) throws IOException, InterruptedException {
@@ -39,7 +39,7 @@ public class Main {
 		}
 		else if(args[0].equals("run")){
 
-			if(args.length != 2){
+			if(args.length < 2){
 				System.out.println("\nUSAGE ERROR!");
 				System.out.println("============");
 				System.out.println("run [MODULE NAME] ");	
