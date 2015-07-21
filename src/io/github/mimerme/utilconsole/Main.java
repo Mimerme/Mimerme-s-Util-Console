@@ -74,13 +74,13 @@ public class Main {
 
 			ProcessBuilder procb = new ProcessBuilder(parameters).redirectErrorStream(true);
 			Process proc = procb.start();
-			
-			proc.waitFor();
-			
+						
 			InputStream is = proc.getInputStream();
 			InputStreamReader isr = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(isr);
 
+			proc.wait(5000);
+			
 			String line;
 			int exit = -1;
 
