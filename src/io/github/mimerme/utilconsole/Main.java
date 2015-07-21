@@ -62,8 +62,8 @@ public class Main {
 
 			Process pb;
 
-/*			String command = "cmd /c java -jar " + path;
-*/
+			/*			String command = "cmd /c java -jar " + path;
+			 */
 
 			List<String> parameters = new ArrayList<String>();
 			parameters.add(path);
@@ -74,20 +74,30 @@ public class Main {
 
 			ProcessBuilder procb = new ProcessBuilder(parameters).redirectErrorStream(true);
 			Process proc = procb.start();
-						
-			InputStream is = proc.getInputStream();
-			InputStreamReader isr = new InputStreamReader(is);
-			BufferedReader br = new BufferedReader(isr);
 
-			proc.wait(5000);
-			
 			String line;
-			int exit = -1;
+		    OutputStream stdin = null;
+		    InputStream stderr = null;
+		    InputStream stdout = null;
+			
+			stdin = proc.getOutputStream ();
+			stderr = proc.getErrorStream ();
+			stdout = proc.getInputStream ();
 
-			while ((line = br.readLine()) != null) {
-			    // Outputs your process execution
-			    System.out.println(line);
+			BufferedReader brCleanUp =
+					new BufferedReader (new InputStreamReader (stdout));
+			while ((line = brCleanUp.readLine ()) != null) {
+				System.out.println ("[Stdout] " + line);
 			}
+			brCleanUp.close();
+
+			// clean up if any output in stderr
+			brCleanUp =
+					new BufferedReader (new InputStreamReader (stderr));
+			while ((line = brCleanUp.readLine ()) != null) {
+				System.out.println ("[Stderr] " + line);
+			}
+			brCleanUp.close();
 		}
 		else if(args[0].equals("update")){
 			if(args.length > 1){
