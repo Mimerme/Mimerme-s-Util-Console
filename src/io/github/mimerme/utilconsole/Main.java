@@ -10,6 +10,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -70,11 +72,9 @@ public class Main {
 				parameters.add(args[i]);
 			}
 
-			Process proc = new ProcessBuilder(parameters).start();
-
+			ProcessBuilder procb = new ProcessBuilder(parameters).redirectErrorStream(true);
+			Process proc = procb.start();
 			
-/*			Process proc = 	Runtime.getRuntime().exec(command);
-*/
 			proc.waitFor();
 			
 			InputStream is = proc.getInputStream();
@@ -87,13 +87,6 @@ public class Main {
 			while ((line = br.readLine()) != null) {
 			    // Outputs your process execution
 			    System.out.println(line);
-			    try {
-			        exit = proc.exitValue();
-			        if (exit == 0)  {
-			            // Process finished
-			        }
-			    } catch (IllegalThreadStateException t) {
-			    }
 			}
 		}
 		else if(args[0].equals("update")){
