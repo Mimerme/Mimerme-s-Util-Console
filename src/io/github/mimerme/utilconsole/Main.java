@@ -15,6 +15,8 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Main {
@@ -22,7 +24,7 @@ public class Main {
 	static String s = null;
 	public static final String RELEASE_NAME = "NICKS";
 	public static final String DEVELOPER_RELEASE_NAME = "Andros (Mimerme) Yang";
-	public static final String VERSION_NAME = "v.0.8.6b";
+	public static final String VERSION_NAME = "v.0.8.7b";
 	public static final Map<String, String> env = System.getenv();
 
 	public static void main(String[] args) throws IOException, InterruptedException {
@@ -46,7 +48,7 @@ public class Main {
 				return;
 			}
 
-			String path = env.get("UTILS_PATH")  +"\\" + args[1] + "\\" + args[1] + ".jar";
+			String path = env.get("UTILS_PATH")  +"\\" + args[1] + "\\" + args[1] + ".bat";
 			File f = new File(path);
 			if(!f.exists()) {
 				System.out.println("Module specified could not be found");
@@ -58,15 +60,23 @@ public class Main {
 
 			Process pb;
 
-			String command = "cmd /c java -jar " + path;
+/*			String command = "cmd /c java -jar " + path;
+*/
 
+			List<String> parameters = new ArrayList<String>();
+			parameters.add(path);
 			//Parse additional arguments
 			for(int i = 2; i < args.length; i++){
-				command += " " + args[i];
+				parameters.add(args[i]);
 			}
 
-			Process proc = 	Runtime.getRuntime().exec(command);
+			Process proc = new ProcessBuilder(parameters).start();
 
+			
+/*			Process proc = 	Runtime.getRuntime().exec(command);
+*/
+			proc.waitFor();
+			
 			InputStream is = proc.getInputStream();
 			InputStreamReader isr = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(isr);
@@ -83,7 +93,6 @@ public class Main {
 			            // Process finished
 			        }
 			    } catch (IllegalThreadStateException t) {
-			        	System.out.println("Process IllegalThreadState, not destroying");
 			    }
 			}
 		}
