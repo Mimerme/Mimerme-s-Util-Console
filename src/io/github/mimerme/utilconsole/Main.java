@@ -27,7 +27,7 @@ public class Main {
 	static String s = null;
 	public static final String RELEASE_NAME = "NICKS";
 	public static final String DEVELOPER_RELEASE_NAME = "Andros (Mimerme) Yang";
-	public static final String VERSION_NAME = "v.0.8.7b";
+	public static final String VERSION_NAME = "v.1.0";
 	public static final Map<String, String> env = System.getenv();
 
 	public static final Scanner input = new Scanner(System.in);
