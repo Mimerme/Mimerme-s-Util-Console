@@ -65,9 +65,6 @@ public class Main {
 
 			Process pb;
 
-			/*			String command = "cmd /c java -jar " + path;
-			 */
-
 			List<String> parameters = new ArrayList<String>();
 			parameters.add(path);
 			//Parse additional arguments
@@ -78,34 +75,6 @@ public class Main {
 			ProcessBuilder procb = new ProcessBuilder(parameters).redirectErrorStream(true).inheritIO();
 			Process proc = procb.start();
 			proc.waitFor();
-			/*String line;
-			OutputStream stdin = null;
-			InputStream stderr = null;
-			InputStream stdout = null;
-
-			stdin = proc.getOutputStream ();
-			stderr = proc.getErrorStream ();
-			stdout = proc.getInputStream ();
-
-			BufferedReader brCleanUp =
-					new BufferedReader (new InputStreamReader (stdout));
-			while ((line = brCleanUp.readLine ()) != null) {
-				if(input.hasNext()){
-					stdin.write(input.next().getBytes());
-					stdin.flush();
-				}
-					System.out.println ("[Stdout] " + line);
-			}
-			stdin.close();
-			brCleanUp.close();
-
-			// clean up if any output in stderr
-			brCleanUp =
-					new BufferedReader (new InputStreamReader (stderr));
-			while ((line = brCleanUp.readLine ()) != null) {
-				System.out.println ("[Stderr] " + line);
-			}
-			brCleanUp.close();*/
 		}
 		else if(args[0].equals("update")){
 			if(args.length > 1){
@@ -247,19 +216,6 @@ public class Main {
 		}
 
 		System.out.println("--------------------------------------");
-		//Removed because it does not support multiple OS's easily
-		/*			System.out.println("==|Adding to PATH|==");
-		 */
-		/*Process p = Runtime.getRuntime().exec("cmd /c set PATH=%PATH%;" 
-				+ env.get("UTILS_PATH") + "\\" + args[2] + "\\"+ fileName);
-
-		p.waitFor();		
-		Runtime.getRuntime().exec("cmd /c set PATH=%PATH%;" 
-				+ env.get("UTILS_PATH") + "\\" + args[2]);
-
-		System.out.println("All files should be stored in " + env.get("UTILS_PATH"));*/
-
-
 	}
 
 	static void download(String args[]) throws IOException{
@@ -352,19 +308,6 @@ public class Main {
 		}
 
 		System.out.println("--------------------------------------");
-		//Removed because it does not support multiple OS's easily
-		/*			System.out.println("==|Adding to PATH|==");
-		 */
-		/*Process p = Runtime.getRuntime().exec("cmd /c set PATH=%PATH%;" 
-				+ env.get("UTILS_PATH") + "\\" + args[2] + "\\"+ fileName);
-
-		p.waitFor();		
-		Runtime.getRuntime().exec("cmd /c set PATH=%PATH%;" 
-				+ env.get("UTILS_PATH") + "\\" + args[2]);
-
-		System.out.println("All files should be stored in " + env.get("UTILS_PATH"));*/
-
-
 	}
 
 }
