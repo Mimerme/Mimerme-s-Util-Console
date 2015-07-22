@@ -23,15 +23,24 @@ To create a module you must include
 
 Structure
 =========
+
 UtilConsole
 |
+
 --|release.jar
+
 --|release.bat
+
 --|release.REPO
+
 --|[MODULE]
+
 ----|[MODULE].REPO
+
 ----|[MODULE].jar
+
 ----|[MODULE].bat
+
 
 #Commands
 NOTE: You must add the batch file to your PATH
