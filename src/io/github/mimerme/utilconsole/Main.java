@@ -20,6 +20,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Main {
 
@@ -28,6 +29,8 @@ public class Main {
 	public static final String DEVELOPER_RELEASE_NAME = "Andros (Mimerme) Yang";
 	public static final String VERSION_NAME = "v.0.8.7b";
 	public static final Map<String, String> env = System.getenv();
+
+	public static final Scanner input = new Scanner(System.in);
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		System.out.println("\nRunning Utility Console [" + RELEASE_NAME + "] : "
@@ -76,10 +79,10 @@ public class Main {
 			Process proc = procb.start();
 
 			String line;
-		    OutputStream stdin = null;
-		    InputStream stderr = null;
-		    InputStream stdout = null;
-			
+			OutputStream stdin = null;
+			InputStream stderr = null;
+			InputStream stdout = null;
+
 			stdin = proc.getOutputStream ();
 			stderr = proc.getErrorStream ();
 			stdout = proc.getInputStream ();
@@ -88,7 +91,12 @@ public class Main {
 					new BufferedReader (new InputStreamReader (stdout));
 			while ((line = brCleanUp.readLine ()) != null) {
 				System.out.println ("[Stdout] " + line);
+				if(input.hasNext()){
+					stdin.write(input.next().getBytes());
+					stdin.flush();
+				}
 			}
+			stdin.close();
 			brCleanUp.close();
 
 			// clean up if any output in stderr
