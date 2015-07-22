@@ -77,3 +77,10 @@ as well as include detailed install instructions
 ex. the module URL for this repository is
 
 https://raw.githubusercontent.com/Mimerme/Mimerme-s-Util-Console/master/release/
+
+NOTE: Try to keep the module  url consistant, if not then the .REPO files will be unable to manage your module's updates
+
+#Forking this utility console
+I will be using a utility console in many of my APIs for now on because if its simplicity to test APIs via unit testing.
+When forking it is recomended to change the branch name, the author name, as well as the version to specify different forks
+from each other, each with different features.
