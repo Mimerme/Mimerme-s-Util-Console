@@ -75,10 +75,10 @@ public class Main {
 				parameters.add(args[i]);
 			}
 
-			ProcessBuilder procb = new ProcessBuilder(parameters).redirectErrorStream(true);
+			ProcessBuilder procb = new ProcessBuilder(parameters).redirectErrorStream(true).inheritIO();
 			Process proc = procb.start();
 
-			String line;
+			/*String line;
 			OutputStream stdin = null;
 			InputStream stderr = null;
 			InputStream stdout = null;
@@ -94,9 +94,7 @@ public class Main {
 					stdin.write(input.next().getBytes());
 					stdin.flush();
 				}
-				else{
 					System.out.println ("[Stdout] " + line);
-				}
 			}
 			stdin.close();
 			brCleanUp.close();
@@ -107,7 +105,7 @@ public class Main {
 			while ((line = brCleanUp.readLine ()) != null) {
 				System.out.println ("[Stderr] " + line);
 			}
-			brCleanUp.close();
+			brCleanUp.close();*/
 		}
 		else if(args[0].equals("update")){
 			if(args.length > 1){
