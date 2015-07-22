@@ -90,10 +90,12 @@ public class Main {
 			BufferedReader brCleanUp =
 					new BufferedReader (new InputStreamReader (stdout));
 			while ((line = brCleanUp.readLine ()) != null) {
-				System.out.println ("[Stdout] " + line);
 				if(input.hasNext()){
 					stdin.write(input.next().getBytes());
 					stdin.flush();
+				}
+				else{
+					System.out.println ("[Stdout] " + line);
 				}
 			}
 			stdin.close();
