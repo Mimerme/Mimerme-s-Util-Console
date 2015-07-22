@@ -77,7 +77,7 @@ public class Main {
 
 			ProcessBuilder procb = new ProcessBuilder(parameters).redirectErrorStream(true).inheritIO();
 			Process proc = procb.start();
-
+			proc.waitFor();
 			/*String line;
 			OutputStream stdin = null;
 			InputStream stderr = null;
