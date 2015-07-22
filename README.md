@@ -5,9 +5,9 @@ Utility console written in Java to run and download console modules easliy
 - runs on Windows (can be modified/plans for multiplatform)
 - manages modules for Java Applications, similar to NPM or RubyGems
 - universal and can be configured to run any application written in any language using batch scripts
-- all-update modules
+- update-all modules, good for easy dependency management
 - core-update module
-- easy running of programs (release run [module]), no more Java -jar [module] -Xmx512M -Xms512M
+- easy running of programs (release run [module]), no more Java -jar [module]
 - download modules from anywhere, including GitHub, Dropbox, and Google Drive (independent repo management)
 
 #Problems
@@ -52,3 +52,28 @@ release run [MODULE] - runs the specified module
 release update - updates all the modules
 
 release update main - updates the module manager
+
+#Installing the utility console
+1) Download the release.jar and release.bat both from the release folder
+
+2) Add the release.bat to the PATH so that it can be called via 'release' in the console
+
+3) type release and check for the version as well as branch and release name confirm that they are correct
+
+#Installing a module
+1) type 'release dwn '
+
+NOTE: the module url must have a backslash and if release.jar/.bat is appended to the end it should redirect to the raw/download of the file
+
+2) To update all modules type 'release update'
+
+#Setting a module for download
+NOTE: It is recomended that you create the proper custom batch script to make proper modifications to the user's system
+as well as include detailed install instructions
+
+1) Set up a repository and push release.jar and release.bat to the repository
+
+2) link the base URL to the raw files, this is your module URL
+ex. the module URL for this repository is
+
+https://raw.githubusercontent.com/Mimerme/Mimerme-s-Util-Console/master/release/
