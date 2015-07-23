@@ -3,17 +3,19 @@ Utility console written in Java to run and download console modules easliy
 
 #Features
 - runs on Windows (can be modified/plans for multiplatform)
+- small support for *NIX systems
 - manages modules for Java Applications, similar to NPM or RubyGems
 - universal and can be configured to run any application written in any language using batch scripts
 - update-all modules, good for easy dependency management
 - core-update module
-- easy running of programs (release run [module]), no more Java -jar [module]
+- test APIs by running them as Java programs
 - download modules from anywhere, including GitHub, Dropbox, and Google Drive (independent repo management)
 
 #Problems
 - Windows only (due to it running only batch scripts, shell scripts incomming)
 - some bugs and code performance issues
 - repetative code
+- JDK compile level is 1.8 (a bit too high for my liking)
 
 #Module Structure
 To create a module you must include
@@ -84,3 +86,6 @@ NOTE: Try to keep the module  url consistant, if not then the .REPO files will b
 I will be using a utility console in many of my APIs for now on because if its simplicity to test APIs via unit testing.
 When forking it is recomended to change the branch name, the author name, as well as the version to specify different forks
 from each other, each with different features.
+
+#TO-DO
+- Complete support for Linux
