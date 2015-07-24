@@ -6,7 +6,9 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,7 +29,7 @@ public class Main {
 	static String s = null;
 	public static final String RELEASE_NAME = "NICKS";
 	public static final String DEVELOPER_RELEASE_NAME = "Andros (Mimerme) Yang";
-	public static final String VERSION_NAME = "v.1.0";
+	public static final String VERSION_NAME = "v.1.1";
 	public static final Map<String, String> env = System.getenv();
 
 	public static final Scanner input = new Scanner(System.in);
@@ -43,6 +45,23 @@ public class Main {
 
 		if(args[0].equals("dwn")){
 			download(args);
+			//Set up configuration for saving modules
+			try {
+
+				File file = new File(System.getenv("UTILS_PATH") + "MODULE.info");
+
+				if (!file.exists() && file.createNewFile()){
+					System.out.println("Creating new MODULE.info");
+				}
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			System.out.println("Adding module to MODULE.info");
+	        FileWriter fileWriter = new FileWriter(System.getenv("UTILS_PATH") + "MODULE.info");
+	        
+	        fileWriter.write(args[2]);
+	        fileWriter.close();
 		}
 		else if(args[0].equals("run")){
 
@@ -88,10 +107,26 @@ public class Main {
 				System.exit(1);
 			}
 
-			//Requires Java 8
 			System.out.println("\nUpdating all modules");
+			//Java 7 and lower
+			File dir = new File(System.getenv("UTILS_PATH"));
+			File moduleInfo = new File(System.getenv("UTILS_PATH") + "\\MODULE.info");
+			try (BufferedReader br = new BufferedReader(new FileReader(moduleInfo))) {
+			    String line;
+			    while ((line = br.readLine()) != null) {
+					File moduleREPO = new File(System.getenv("UTILS_PATH") + "\\" + line + "\\" + line + ".REPO");
+					BufferedReader readRepo = new BufferedReader(new FileReader(moduleREPO));
+			       download(new String[]{
+			    		   null,
+			    		   readRepo.readLine(),
+			    		   line
+			       });
+			    }
+			}
 
-			Files.walk(Paths.get(env.get("UTILS_PATH"))).forEach(folderPath -> {
+
+			//Requires Java 8 iterates through all modules and download's their corresponding module
+			/*Files.walk(Paths.get(env.get("UTILS_PATH"))).forEach(folderPath -> {
 				if (!Files.isDirectory(folderPath, LinkOption.NOFOLLOW_LINKS)) {
 					try {
 						Files.walk(Paths.get(folderPath.toString())).forEach(filePath -> {
@@ -112,7 +147,7 @@ public class Main {
 						e.printStackTrace();
 					}
 				}
-			});
+			});*/
 
 		}
 	}
