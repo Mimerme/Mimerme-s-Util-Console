@@ -38,27 +38,33 @@ public class Main {
 		System.out.println("\nRunning Utility Console [" + RELEASE_NAME + "] : "
 				+ "[" + DEVELOPER_RELEASE_NAME + "]");
 		System.out.println("VERSION: " + VERSION_NAME);
+		
+		//Set up configuration for saving modules
+		try {
+
+			File file = new File(System.getenv("UTILS_PATH") + "\\" +  "MODULE.info");
+
+			if (!file.exists()){
+				file.createNewFile();
+				System.out.println("Creating new MODULE.info");
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		if(args.length < 1){
 			return;
 		}
 
 		if(args[0].equals("dwn")){
-			download(args);
-			//Set up configuration for saving modules
-			try {
-
-				File file = new File(System.getenv("UTILS_PATH") + "MODULE.info");
-
-				if (!file.exists() && file.createNewFile()){
-					System.out.println("Creating new MODULE.info");
-				}
-
-			} catch (IOException e) {
-				e.printStackTrace();
+			if(new File(System.getenv("UTILS_PATH") + "\\" + args[2]).isDirectory()){
+				System.out.println("There is already a direcotry named \'" + args[1] + "\'");
+				return;
 			}
+			download(args);
 			System.out.println("Adding module to MODULE.info");
-	        FileWriter fileWriter = new FileWriter(System.getenv("UTILS_PATH") + "MODULE.info");
+	        FileWriter fileWriter = new FileWriter(System.getenv("UTILS_PATH") + "\\MODULE.info");
 	        
 	        fileWriter.write(args[2]);
 	        fileWriter.close();
@@ -109,7 +115,6 @@ public class Main {
 
 			System.out.println("\nUpdating all modules");
 			//Java 7 and lower
-			File dir = new File(System.getenv("UTILS_PATH"));
 			File moduleInfo = new File(System.getenv("UTILS_PATH") + "\\MODULE.info");
 			try (BufferedReader br = new BufferedReader(new FileReader(moduleInfo))) {
 			    String line;
