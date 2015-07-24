@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -29,7 +30,7 @@ public class Main {
 	static String s = null;
 	public static final String RELEASE_NAME = "NICKS";
 	public static final String DEVELOPER_RELEASE_NAME = "Andros (Mimerme) Yang";
-	public static final String VERSION_NAME = "v.1.1";
+	public static final String VERSION_NAME = "v.1.2";
 	public static final Map<String, String> env = System.getenv();
 
 	public static final Scanner input = new Scanner(System.in);
@@ -38,7 +39,7 @@ public class Main {
 		System.out.println("\nRunning Utility Console [" + RELEASE_NAME + "] : "
 				+ "[" + DEVELOPER_RELEASE_NAME + "]");
 		System.out.println("VERSION: " + VERSION_NAME);
-		
+
 		//Set up configuration for saving modules
 		try {
 
@@ -59,15 +60,15 @@ public class Main {
 
 		if(args[0].equals("dwn")){
 			if(new File(System.getenv("UTILS_PATH") + "\\" + args[2]).isDirectory()){
-				System.out.println("There is already a direcotry named \'" + args[1] + "\'");
+				System.out.println("There is already a direcotry named \'" + args[2] + "\'");
 				return;
 			}
 			download(args);
 			System.out.println("Adding module to MODULE.info");
-	        FileWriter fileWriter = new FileWriter(System.getenv("UTILS_PATH") + "\\MODULE.info");
-	        
-	        fileWriter.write(args[2]);
-	        fileWriter.close();
+			FileWriter fileWriter = new FileWriter(System.getenv("UTILS_PATH") + "\\MODULE.info");
+
+			fileWriter.write(args[2]);
+			fileWriter.close();
 		}
 		else if(args[0].equals("run")){
 
@@ -117,16 +118,16 @@ public class Main {
 			//Java 7 and lower
 			File moduleInfo = new File(System.getenv("UTILS_PATH") + "\\MODULE.info");
 			try (BufferedReader br = new BufferedReader(new FileReader(moduleInfo))) {
-			    String line;
-			    while ((line = br.readLine()) != null) {
+				String line;
+				while ((line = br.readLine()) != null) {
 					File moduleREPO = new File(System.getenv("UTILS_PATH") + "\\" + line + "\\" + line + ".REPO");
 					BufferedReader readRepo = new BufferedReader(new FileReader(moduleREPO));
-			       download(new String[]{
-			    		   null,
-			    		   readRepo.readLine(),
-			    		   line
-			       });
-			    }
+					download(new String[]{
+							null,
+							readRepo.readLine(),
+							line
+					});
+				}
 			}
 
 
@@ -214,7 +215,7 @@ public class Main {
 		releaseURL = args[1] + "/release.bat?raw=true";
 		System.out.println("\nDownloading configuration from " + releaseURL);
 
-		fileName = "release.bat";
+		fileName = "jutils.bat";
 		link = new URL(releaseURL); //The file that you want to download
 
 		//Code to download
@@ -348,6 +349,73 @@ public class Main {
 		}
 
 		System.out.println("--------------------------------------");
+
+		releaseURL = args[1] + "/release.EXTRA?raw=true";
+		System.out.println("\nDownloading EXTRA configuration from " + releaseURL);
+
+		fileName = "tmp.EXTRA";
+		link = new URL(releaseURL); //The file that you want to download
+
+		//Code to download
+		try{
+			in = new BufferedInputStream(link.openStream());
+		}
+		catch(FileNotFoundException e){
+			System.out.println("No release.EXTRA, skipping");
+			in.close();
+			out.close();
+			fos.close();
+			return;
+		}
+		out = new ByteArrayOutputStream();
+		buf = new byte[1024];
+		n = 0;
+		while (-1!=(n=in.read(buf)))
+		{
+			out.write(buf, 0, n);
+		}
+		System.out.print('\n');
+		out.close();
+		in.close();
+		response = out.toByteArray();
+		new File(env.get("UTILS_PATH") + "\\tmp").mkdirs();
+		fos = new FileOutputStream(env.get("UTILS_PATH") + "\\tmp\\" + fileName);
+		fos.write(response);
+		fos.close();
+		List<String> lines = Files.readAllLines(Paths.get(System.getenv("UTILS_PATH") + "\\tmp\\" + fileName));
+
+		System.out.println("Downloading " + lines.size() + " extra files");
+
+		for(String file : lines){
+			if(!downloadExtra(args[1], args[2], file)){
+				System.out.println("There was a problem download the extra file \'" + file + "\'");
+			}
+		}
+	}
+
+	//download extra files from release.EXTRA
+	public static boolean downloadExtra(String baseURL, String moduleName, String fileName) throws IOException{
+		URL link = new URL(baseURL + fileName); //The file that you want to download
+
+		//Code to download
+		InputStream in = new BufferedInputStream(link.openStream());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		byte[] buf = new byte[1024];
+		int n = 0;
+		while (-1!=(n=in.read(buf)))
+		{
+			out.write(buf, 0, n);
+		}
+		System.out.print('\n');
+		out.close();
+		in.close();
+		byte[] response = out.toByteArray();
+		new File(env.get("UTILS_PATH") + "\\" + moduleName).mkdirs();
+		FileOutputStream fos = new FileOutputStream(env.get("UTILS_PATH") + "\\" + moduleName + "\\"+ fileName);
+		fos.write(response);
+		fos.close();
+
+		return true;
 	}
 
 }
