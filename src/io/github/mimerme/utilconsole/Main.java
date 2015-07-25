@@ -58,7 +58,16 @@ public class Main {
 			return;
 		}
 
-		if(args[0].equals("dwn")){
+		if(args[0].equals("rm")){
+			if(args[1] == null){
+				System.out.println("\nUSAGE ERROR!");
+				System.out.println("============");
+				System.out.println("rm [DIRECTORY NAME] ");
+				return;
+			}
+			deleteDirectory(new File(System.getenv("UTILS_PATH") + "/" + args[1]));
+		}
+		else if(args[0].equals("dwn")){
 			if(new File(System.getenv("UTILS_PATH") + "\\" + args[2]).isDirectory()){
 				System.out.println("There is already a direcotry named \'" + args[2] + "\'");
 				return;
@@ -259,6 +268,23 @@ public class Main {
 		System.out.println("--------------------------------------");
 	}
 
+	public static boolean deleteDirectory(File directory) {
+	    if(directory.exists()){
+	        File[] files = directory.listFiles();
+	        if(null!=files){
+	            for(int i=0; i<files.length; i++) {
+	                if(files[i].isDirectory()) {
+	                    deleteDirectory(files[i]);
+	                }
+	                else {
+	                    files[i].delete();
+	                }
+	            }
+	        }
+	    }
+	    return(directory.delete());
+	}
+	
 	static void download(String args[]) throws IOException{
 
 		//file structure
