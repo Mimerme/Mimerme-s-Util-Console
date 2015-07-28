@@ -28,9 +28,9 @@ import java.util.Scanner;
 public class Main {
 
 	static String s = null;
-	public static final String RELEASE_NAME = "NICKS";
+	public static final String RELEASE_NAME = "TiK";
 	public static final String DEVELOPER_RELEASE_NAME = "Andros (Mimerme) Yang";
-	public static final String VERSION_NAME = "v.1.2";
+	public static final String VERSION_NAME = "v.1.3";
 	public static final Map<String, String> env = System.getenv();
 
 	public static final Scanner input = new Scanner(System.in);
@@ -410,9 +410,16 @@ public class Main {
 		fos.close();
 		List<String> lines = Files.readAllLines(Paths.get(System.getenv("UTILS_PATH") + "\\tmp\\" + fileName));
 
-		System.out.println("Downloading " + lines.size() + " extra files");
+		System.out.println("Processing " + lines.size() + " extra files");
 
 		for(String file : lines){
+			//Chec to see if the star is the last character
+			if(file.indexOf("*") == file.length()-1){
+				if(new File(env.get("UTILS_PATH") + "\\" + args[2] + "\\" + file).exists()){
+					System.out.println("Not overwriting " + file);
+					return;
+				}
+			}
 			if(!downloadExtra(args[1], args[2], file)){
 				System.out.println("There was a problem download the extra file \'" + file + "\'");
 			}
