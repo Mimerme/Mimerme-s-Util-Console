@@ -221,7 +221,7 @@ public class Main {
 
 		//-----------------------------------------------------------
 
-		releaseURL = args[1] + "/release.bat?raw=true";
+		releaseURL = args[1] + "/jutils.bat?raw=true";
 		System.out.println("\nDownloading configuration from " + releaseURL);
 
 		fileName = "jutils.bat";
