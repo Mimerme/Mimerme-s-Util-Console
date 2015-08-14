@@ -30,12 +30,13 @@ public class Main {
 	static String s = null;
 	public static final String RELEASE_NAME = "TiK";
 	public static final String DEVELOPER_RELEASE_NAME = "Andros (Mimerme) Yang";
-	public static final String VERSION_NAME = "v.1.3";
+	public static final String VERSION_NAME = "v.1.5";
 	public static final Map<String, String> env = System.getenv();
 
 	public static final Scanner input = new Scanner(System.in);
 
 	public static void main(String[] args) throws IOException, InterruptedException {
+
 		System.out.println("\nRunning Utility Console [" + RELEASE_NAME + "] : "
 				+ "[" + DEVELOPER_RELEASE_NAME + "]");
 		System.out.println("VERSION: " + VERSION_NAME);
